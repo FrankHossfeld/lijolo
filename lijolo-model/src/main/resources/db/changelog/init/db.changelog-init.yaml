@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - include:
+      file: schema/db.changelog-table-init.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: schema/db.changelog-index-init.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: schema/db.changelog-view-init.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: schema/db.changelog-foreign-key-init.yaml
+      relativeToChangelogFile: true
+  - changeSet:
+      id: db-init-sql-001
+      author: system
+      changes:
+        - sqlFile:
+            relativeToChangelogFile: true
+            path: sql/pool_test_data.sql

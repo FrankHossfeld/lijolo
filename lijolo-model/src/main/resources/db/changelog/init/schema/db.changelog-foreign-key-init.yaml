@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: db-init-ijolo-address-foreign-key-001
+      author: system
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: person_nr
+            baseTableName: personen
+            constraintName: fk_address_person_nr
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: person_nr
+            referencedTableName: personen
+            validate: true

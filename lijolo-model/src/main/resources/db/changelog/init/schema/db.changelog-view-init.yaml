@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: db-init-lijolo-view-001
+      author: system
+      changes:
+        - createView:
+            fullDefinition: false
+            selectQuery: |-
+              SELECT personen.person_nr,
+                  personen.name01,
+                  personen.name02,
+                  personen.name03,
+                  personen.kunde,
+                  personen.leiferant,
+                  personen.notes,
+                  adressen.strasse,
+                  adressen.hausnummer,
+                  adressen.plz,
+                  adressen.ort
+                 FROM personen
+                   LEFT JOIN adressen ON personen.person_nr = adressen.person_nr;
+            viewName: personen_with_address
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.github.lijolo</groupId>
+    <artifactId>lijolo</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>lijolo-model</artifactId>
+  <version>HEAD-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <description>lijolo model</description>
+
+  <inceptionYear>2025</inceptionYear>
+
+  <properties>
+    <aws.version>2.35.10</aws.version>
+    <testcontainers.version>1.21.1</testcontainers.version>
+
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+
+  </dependencies>
+
+
+</project>

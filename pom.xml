@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.lijolo</groupId>
+  <artifactId>lijolo</artifactId>
+  <version>HEAD-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <description>lijolo model</description>
+
+  <inceptionYear>2025</inceptionYear>
+
+  <scm>
+    <connection>scm:git@github.com:FrankHossfeld/lijolo-model.git</connection>
+    <developerConnection>scm:git:git@github.com:FrankHossfeld/lijolo-model.git</developerConnection>
+    <url>scm:git:https://github.com/FrankHossfeld/lijolo-model</url>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/FrankHossfeld/lijolo-model/issues</url>
+  </issueManagement>
+
+  <properties>
+    <aws.version>2.35.10</aws.version>
+    <testcontainers.version>1.21.1</testcontainers.version>
+
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>software.amazon.awssdk</groupId>
+        <artifactId>bom</artifactId>
+        <version>${aws.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>${testcontainers.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+
+  </dependencies>
+
+
+
+
+  <modules>
+    <module>lijolo-model</module>
+  </modules>
+</project>

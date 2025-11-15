@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: dev-data
+      author: system
+      context: dev-data
+      changes:
+        - sqlFile:
+            path: test-data/demo/personen_data.sql
+            relativeToChangelogFile: true
+        - sqlFile:
+            path: test-data/demo/adressen_data.sql
+            relativeToChangelogFile: true

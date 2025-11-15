@@ -1,0 +1,72 @@
+services:
+  # Datenbank für die lokale Entwicklung
+  postgres-lijolo-dev:
+    container_name: DB-lijolo-dev
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=lijolo-dev
+    ports:
+      - 5462:5432
+    volumes:
+      - postgres-data:/var/docker/postgres-data-volume/
+
+  init-container-lijolo-dev:
+    image: liquibase/liquibase:4.23-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    depends_on:
+      - postgres-lijolo-dev
+    command: --url=jdbc:postgresql://postgres-lijolo-dev:5432/lijolo-dev --search-path="main" --changelog-file=db.changelog-init.yaml --username=postgres --password postgres --contexts="dev-data" --log-level=INFO update
+    volumes:
+      - ./lijolo-model/src/main/resources/db/changelog/init:/liquibase/main/
+
+  load-container-lijolo-dev:
+    image: liquibase/liquibase:4.23-alpine
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    depends_on:
+      - init-container-lijolo-dev
+    command: --url=jdbc:postgresql://postgres-lijolo-dev:5432/lijolo-dev --search-path="docker" --changelog-file=db.changelog-demo.yaml --username=postgres --password postgres --contexts="dev-data" --log-level=INFO update
+    volumes:
+      - ./lijolo-model/src/docker/db/changelog:/liquibase/docker/
+
+  # Datenbank mit dem produktiven Schema für die Ermittlung des Update-Changelogs
+  postgres-lijolo-prod:
+    container_name: DB-lijolo-prod
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=lijolo-prod
+    ports:
+      - 5463:5432
+    volumes:
+      - postgres-data:/var/docker/postgres-data-volume/
+
+  localstack-local:
+    image: localstack/localstack:4.1.1
+    restart: always
+    environment:
+      - AWS_DEFAULT_REGION=eu-central-1
+      - GATEWAY_LISTEN=4566
+      - SERVICES=s3,secretsmanager,sns,sqs
+    ports:
+      - 4596:4566
+    volumes:
+      - ${TEMPDIR:-/tmp/localstack}:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./awslocal/init/:/etc/localstack/init/ready.d
+
+volumes:
+  postgres-data: { }
+  db-changelog-data: { }

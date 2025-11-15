@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: db-init-lijolo-table-001
+      author: system
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pool_test_pkey
+                  name: pool_test_nr
+                  type: integer
+                  startWith: 1000000
+              - column:
+                  name: activeState
+                  type: varchar(32)
+            tableName: pool_test
+  - changeSet:
+      id: db-init-lijolo-table-002
+      author: system
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: sperson_pkey
+                  name: person_nr
+                  type: integer
+                  startWith: 1024
+              - column:
+                  name: name01
+                  type: varchar(128)
+              - column:
+                  name: name02
+                  type: varchar(128)
+              - column:
+                  name: name03
+                  type: varchar(128)
+              - column:
+                  defaultValueBoolean: false
+                  name: kunde
+                  type: BOOLEAN
+              - column:
+                  defaultValueBoolean: false
+                  name: leiferant
+                  type: BOOLEAN
+              - column:
+                  name: notes
+                  type: varchar(1024)
+            tableName: personen
+  - changeSet:
+      id: db-init-lijolo-table-003
+      author: system
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: adresse_pkey
+                  name: adresse_nr
+                  type: integer
+                  startWith: 1000000
+              - column:
+                  name: person_nr
+                  type: integer
+              - column:
+                  name: strasse
+                  type: varchar(128)
+              - column:
+                  name: hausnummer
+                  type: varchar(16)
+              - column:
+                  name: plz
+                  type: varchar(16)
+              - column:
+                  name: ort
+                  type: varchar(128)
+            tableName: adressen
+
