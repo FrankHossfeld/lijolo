@@ -19,8 +19,13 @@
   <inceptionYear>2025</inceptionYear>
 
   <properties>
-    <aws.version>2.35.10</aws.version>
-    <testcontainers.version>1.21.1</testcontainers.version>
+
+    <testcontainers.postgresql.version>1.21.3</testcontainers.postgresql.version>
+
+    <plugin.version.assembly>3.6.0</plugin.version.assembly>
+    <plugin.version.groovy>2.1.1</plugin.version.groovy>
+    <plugin.version.jar>3.3.0</plugin.version.jar>
+    <plugin.version.liquibase>4.31.0</plugin.version.liquibase>
 
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -29,7 +34,196 @@
 
   <dependencies>
 
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq-meta</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jooq</groupId>
+      <artifactId>jooq-codegen</artifactId>
+    </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.gmaven</groupId>
+        <artifactId>groovy-maven-plugin</artifactId>
+        <version>${plugin.version.groovy}</version>
+        <executions>
+          <execution>
+            <!-- Start the container in any phase before the actual code
+                 generation is required, i.e. at the latest in
+                 generate-sources -->
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <source>
+                db = new org.testcontainers.containers.PostgreSQLContainer(
+                "postgres:latest")
+                .withUsername("test")
+                .withDatabaseName("lijolo-dev")
+                .withPassword("test");
+
+                db.start();
+
+                // After you've started the container, collect its generated
+                // JDBC URL (which contains a random port)
+                project.properties.setProperty('db.url', db.getJdbcUrl());
+              </source>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${testcontainers.postgresql.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-maven-plugin</artifactId>
+        <version>${plugin.version.liquibase}</version>
+        <configuration>
+          <outputChangeLogFile>dbchangelog.yaml</outputChangeLogFile>
+          <!--                    <searchPath>src/main/resources/changelog/</searchPath>-->
+          <searchPath>lijolo-model/src/main/resources/db/changelog/init/</searchPath>
+          <!--                    <changeLogFile>db.changelog-root.xml</changeLogFile>-->
+          <changeLogFile>db.changelog-init.yaml</changeLogFile>
+          <url>${db.url}</url>
+          <username>test</username>
+          <password>test</password>
+          <contexts>none</contexts>
+          <logging>debug</logging>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.driver.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>update</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <version>${jooq.version}</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+
+        <configuration>
+          <logging>INFO</logging>
+          <jdbc>
+            <url>${db.url}</url>
+            <user>test</user>
+            <password>test</password>
+          </jdbc>
+          <generator>
+            <name>org.jooq.codegen.JavaGenerator</name>
+            <database>
+              <name>org.jooq.meta.postgres.PostgresDatabase</name>
+              <includes>.*</includes>
+              <inputSchema>public</inputSchema>
+            </database>
+            <target>
+              <packageName>io.github.lijolo.model.sql</packageName>
+              <directory>target/generated-sources/jooq</directory>
+            </target>
+            <strategy>
+              <matchers>
+                <tables>
+                  <table>
+                    <tableClass>
+                      <transform>PASCAL</transform>
+                      <expression>$0_Jooq</expression>
+                    </tableClass>
+                  </table>
+                </tables>
+              </matchers>
+            </strategy>
+          </generator>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${plugin.version.jar}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- db-updater -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${plugin.version.assembly}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>io.github.lijolo.model.liquibase.Updater</mainClass> <!-- Replace with your main class -->
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <finalName>lijolo-model-liquibase-updater</finalName>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
 
 </project>

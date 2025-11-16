@@ -1,5 +1,5 @@
-INSERT INTO "personen" ("person_nr", "name01", "name02", "name03",
-                                "kunde", "leiferant",
+INSERT INTO "person" ("person_nr", "name_01", "name_02", "name_03",
+                      "kunde", "lieferant",
                                 "notes")
 VALUES (1, 'Coders Heaven Wear' , '', '',
         true, true,

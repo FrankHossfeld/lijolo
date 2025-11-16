@@ -15,7 +15,7 @@ databaseChangeLog:
                   type: integer
                   startWith: 1000000
               - column:
-                  name: activeState
+                  name: active_state
                   type: varchar(32)
             tableName: pool_test
   - changeSet:
@@ -34,13 +34,13 @@ databaseChangeLog:
                   type: integer
                   startWith: 1024
               - column:
-                  name: name01
+                  name: name_01
                   type: varchar(128)
               - column:
-                  name: name02
+                  name: name_02
                   type: varchar(128)
               - column:
-                  name: name03
+                  name: name_03
                   type: varchar(128)
               - column:
                   defaultValueBoolean: false
@@ -48,12 +48,12 @@ databaseChangeLog:
                   type: BOOLEAN
               - column:
                   defaultValueBoolean: false
-                  name: leiferant
+                  name: lieferant
                   type: BOOLEAN
               - column:
                   name: notes
                   type: varchar(1024)
-            tableName: personen
+            tableName: person
   - changeSet:
       id: db-init-lijolo-table-003
       author: system
@@ -65,8 +65,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
-                    primaryKeyName: adresse_pkey
-                  name: adresse_nr
+                    primaryKeyName: anschrift_pkey
+                  name: anschrift_nr
                   type: integer
                   startWith: 1000000
               - column:
@@ -84,5 +84,5 @@ databaseChangeLog:
               - column:
                   name: ort
                   type: varchar(128)
-            tableName: adressen
+            tableName: anschrift
 

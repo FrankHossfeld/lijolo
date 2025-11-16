@@ -34,7 +34,8 @@ services:
         delay: 5s
         max_attempts: 3
     depends_on:
-      - init-container-lijolo-dev
+      init-container-lijolo-dev:
+        condition: service_completed_successfully
     command: --url=jdbc:postgresql://postgres-lijolo-dev:5432/lijolo-dev --search-path="docker" --changelog-file=db.changelog-demo.yaml --username=postgres --password postgres --contexts="dev-data" --log-level=INFO update
     volumes:
       - ./lijolo-model/src/docker/db/changelog:/liquibase/docker/

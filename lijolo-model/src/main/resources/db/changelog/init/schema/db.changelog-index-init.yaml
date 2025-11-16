@@ -6,9 +6,9 @@ databaseChangeLog:
         - createIndex:
             columns:
               - column:
-                  name: name01
-            indexName: paerson_name01_index
-            tableName: personen
+                  name: name_01
+            indexName: person_name_01_index
+            tableName: person
   - changeSet:
       id: db-init-lijolo-index-002
       author: system
@@ -17,5 +17,5 @@ databaseChangeLog:
             columns:
               - column:
                   name: person_nr
-            indexName: adressen_paerson_nr_index
-            tableName: adressen
+            indexName: anschrift_person_nr_index
+            tableName: anschrift

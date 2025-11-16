@@ -7,7 +7,7 @@
   <groupId>com.github.lijolo</groupId>
   <artifactId>lijolo</artifactId>
   <version>HEAD-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <description>lijolo model</description>
 
@@ -25,8 +25,14 @@
   </issueManagement>
 
   <properties>
-    <aws.version>2.35.10</aws.version>
+    <aws.version>2.38.7</aws.version>
+    <jooq.version>3.20.8</jooq.version>
+    <liquibase.version>5.0.1</liquibase.version>
+    <postgresql.driver.version>42.7.8</postgresql.driver.version>
+
     <testcontainers.version>1.21.1</testcontainers.version>
+
+    <plugin.version.compiler>3.12.1</plugin.version.compiler>
 
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -49,14 +55,64 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
+      <dependency>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-core</artifactId>
+        <version>${liquibase.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq</artifactId>
+        <version>${jooq.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-meta</artifactId>
+        <version>${jooq.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen</artifactId>
+        <version>${jooq.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgresql.driver.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
 
+
   </dependencies>
 
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${plugin.version.compiler}</version>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
+            <showWarnings>true</showWarnings>
+            <showDeprecation>true</showDeprecation>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <compilerArgs>
+              <compilerArgument>-Xlint:all</compilerArgument>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 
   <modules>

@@ -6,18 +6,18 @@ databaseChangeLog:
         - createView:
             fullDefinition: false
             selectQuery: |-
-              SELECT personen.person_nr,
-                  personen.name01,
-                  personen.name02,
-                  personen.name03,
-                  personen.kunde,
-                  personen.leiferant,
-                  personen.notes,
-                  adressen.strasse,
-                  adressen.hausnummer,
-                  adressen.plz,
-                  adressen.ort
-                 FROM personen
-                   LEFT JOIN adressen ON personen.person_nr = adressen.person_nr;
-            viewName: personen_with_address
+              SELECT person.person_nr,
+                  person.name_01,
+                  person.name_02,
+                  person.name_03,
+                  person.kunde,
+                  person.lieferant,
+                  person.notes,
+                  anschrift.strasse,
+                  anschrift.hausnummer,
+                  anschrift.plz,
+                  anschrift.ort
+                 FROM person
+                   LEFT JOIN anschrift ON person.person_nr = anschrift.person_nr;
+            viewName: person_mit_anschrift
 
