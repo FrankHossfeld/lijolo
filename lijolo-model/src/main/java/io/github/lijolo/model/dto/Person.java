@@ -75,11 +75,11 @@ public class Person {
     this.notes = notes;
   }
 
-  public List<Anschrift> getanschrift() {
+  public List<Anschrift> getAnschriften() {
     return anschriften;
   }
 
-  public void setanschrift(List<Anschrift> anschriften) {
+  public void setAnschriften(List<Anschrift> anschriften) {
     this.anschriften = anschriften;
   }
 

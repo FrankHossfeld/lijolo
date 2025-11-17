@@ -5,6 +5,9 @@ databaseChangeLog:
       context: unit-test-data
       changes:
         - sqlFile:
+            path: test-data/unit-tests/pool_test_data.sql
+            relativeToChangelogFile: true
+        - sqlFile:
             path: test-data/unit-tests/person_data.sql
             relativeToChangelogFile: true
         - sqlFile:

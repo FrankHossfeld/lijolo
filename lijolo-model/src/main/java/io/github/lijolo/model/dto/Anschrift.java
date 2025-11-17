@@ -14,6 +14,16 @@ public class Anschrift {
   public Anschrift() {
   }
 
+  public Anschrift(String strasse,
+                   String hausnummer,
+                   String plz,
+                   String ort) {
+    this.strasse    = strasse;
+    this.hausnummer = hausnummer;
+    this.plz        = plz;
+    this.ort        = ort;
+  }
+
   public Integer getAnschriftNr() {
     return anschriftNr;
   }

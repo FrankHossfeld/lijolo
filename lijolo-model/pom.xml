@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.github.lijolo</groupId>
+    <groupId>io.github.lijolo</groupId>
     <artifactId>lijolo</artifactId>
     <version>HEAD-SNAPSHOT</version>
   </parent>
@@ -19,7 +19,6 @@
   <inceptionYear>2025</inceptionYear>
 
   <properties>
-
     <testcontainers.postgresql.version>1.21.3</testcontainers.postgresql.version>
 
     <plugin.version.assembly>3.6.0</plugin.version.assembly>
@@ -33,8 +32,6 @@
   </properties>
 
   <dependencies>
-
-
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -110,9 +107,7 @@
         <version>${plugin.version.liquibase}</version>
         <configuration>
           <outputChangeLogFile>dbchangelog.yaml</outputChangeLogFile>
-          <!--                    <searchPath>src/main/resources/changelog/</searchPath>-->
           <searchPath>lijolo-model/src/main/resources/db/changelog/init/</searchPath>
-          <!--                    <changeLogFile>db.changelog-root.xml</changeLogFile>-->
           <changeLogFile>db.changelog-init.yaml</changeLogFile>
           <url>${db.url}</url>
           <username>test</username>
